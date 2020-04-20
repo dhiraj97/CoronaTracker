@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         navView.setItemIconTintList(null);
 
         FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-        trans.replace(R.id.frame, new EnterDataFragment());
+        trans.replace(R.id.frame, new NearbyPatientsFragment());
         trans.commit();
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setNavigationDrawer() {
         //Initial item in navView is checked
-        navView.getMenu().getItem(1).setChecked(true);
+        navView.getMenu().getItem(0).setChecked(true);
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
