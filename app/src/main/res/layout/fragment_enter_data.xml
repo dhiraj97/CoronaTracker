@@ -92,12 +92,15 @@
                     android:ems="10"
                     android:hint="Enter Date of Infection"
                     android:inputType="date" />
+
                 <TextView
                     android:id="@+id/txtAlive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:text="Alive: " />
                 <RadioGroup
                     android:id="@+id/aliveRadioGroup"
@@ -120,14 +123,16 @@
                         android:checked="false"
                         android:text="No" />
                 </RadioGroup>
+
                 <TextView
                     android:id="@+id/txtRecovered"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Recovered: "
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    />
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="Recovered: " />
                 <RadioGroup
                     android:id="@+id/recoveredRadioGroup"
                     android:layout_width="match_parent"
