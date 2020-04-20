@@ -6,4 +6,6 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="enter_data">Insert Data</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
 </resources>
