@@ -156,6 +156,7 @@
                     android:layout_margin="8dp"
                     android:background="@color/colorAccent"
                     android:shadowColor="#FFFFFF"
+                    android:textColor="@color/colorWhite"
                     android:text="Submit"
                     />
             </LinearLayout>
