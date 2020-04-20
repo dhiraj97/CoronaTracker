@@ -63,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Used for inserting patient record. Return true if insert success else false
-    public boolean insertStudent(Patient patient) {
+    public boolean insertPatient(Patient patient) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL2, patient.getFirstName());
@@ -112,20 +112,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    //Fetches record with respect to program code
-    public Cursor viewRecordByProgramCode(String programCode) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor;
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE course='" + programCode + "'";
-        cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
 
     //Updates student record
-    public int updateStudent(Patient patient) {
+    public int updatePatient(Patient patient) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();

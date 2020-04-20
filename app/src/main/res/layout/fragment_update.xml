@@ -3,4 +3,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/txtUpdateStudent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:text="UpdatePatient" />
+
+    <EditText
+        android:id="@+id/txtUpdateId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter Patient Id"
+        android:inputType="number" />
+    <include layout="@layout/fragment_enter_data" />
 </LinearLayout>

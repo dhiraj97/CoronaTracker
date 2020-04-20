@@ -18,6 +18,22 @@ public class Patient {
     public Patient() {
     }
 
+    public Patient(int id, String firstName, String lastName, int age, String streetAddress, String city, String country, String postalCode, double latitude, double longitude, String dateOfInfection, int alive, int recovered) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.streetAddress = streetAddress;
+        this.city = city;
+        this.country = country;
+        this.postalCode = postalCode;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.dateOfInfection = dateOfInfection;
+        this.alive = alive;
+        this.recovered = recovered;
+    }
+
     public int getId() {
         return id;
     }
