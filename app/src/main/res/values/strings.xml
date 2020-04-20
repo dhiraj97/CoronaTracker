@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CoronaTracker</string>
+    <string name="app_name">Corona Tracker</string>
     <string name="near_by_patients">Nearby Patients</string>
     <string name="view_patients">View Patients</string>
     <string name="analytics">Analytics</string>
