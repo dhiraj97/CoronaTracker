@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_view_nearby"
+            android:icon="@drawable/ic_map_marker"
+            android:title="@string/near_by_patients" />
+        <item
+            android:id="@+id/nav_view_data"
+            android:icon="@drawable/ic_patient"
+            android:title="@string/view_patients" />
+        <item
+            android:id="@+id/nav_insert_data"
+            android:icon="@drawable/ic_typing"
+            android:title="@string/enter_data" />
+        <item
+            android:id="@+id/nav_analytics"
+            android:icon="@drawable/ic_analytics"
+            android:title="@string/analytics" />
+        <item
+            android:id="@+id/nav_update"
+            android:icon="@drawable/ic_update"
+            android:title="@string/update" />
+        <item
+            android:id="@+id/nav_delete"
+            android:icon="@drawable/ic_delete"
+            android:title="@string/delete" />
+    </group>
+</menu>

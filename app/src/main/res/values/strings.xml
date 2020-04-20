@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CoronaTracker</string>
+    <string name="near_by_patients">Nearby Patients</string>
+    <string name="view_patients">View Patients</string>
+    <string name="analytics">Analytics</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="enter_data">Insert Data</string>
+</resources>
