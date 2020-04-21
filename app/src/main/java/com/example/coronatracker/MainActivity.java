@@ -1,5 +1,9 @@
 package com.example.coronatracker;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,11 +12,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         //synchronize  the  indicator  icon(Home)  with  the  state  of  the linked DrawerLayout
         mToggle.syncState();
 
-        //Sets the hamburger icon in the actionbar to trigger state of the drawer laout
+        //Sets the hamburger icon in the actionbar to trigger state of the drawer layout
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setNavigationDrawer();
     }
