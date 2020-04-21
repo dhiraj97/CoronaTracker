@@ -3,6 +3,7 @@ package com.example.coronatracker;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -133,6 +135,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap= googleMap;
+        setMapStyle(googleMap);
         if(mLocationPermissionGranted) {
             getDeviceCurrentLocation();
 
@@ -140,11 +143,28 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
-        LatLng sydney = new LatLng(-33.852, 151.211);
-        googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        LatLng sydney = new LatLng(-33.852, 151.211);
+//        googleMap.addMarker(new MarkerOptions().position(sydney)
+//                .title("Marker in Sydney"));
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+    private void setMapStyle(GoogleMap googleMap) {
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.mapstyle));
+
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(TAG, "Can't find style. Error: ", e);
+        }
+    }
+
     private void moveCamera(LatLng latLng, float zoom) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
