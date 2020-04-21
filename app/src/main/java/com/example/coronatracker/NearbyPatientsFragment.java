@@ -4,12 +4,18 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,6 +39,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "NearbyPatientsFragment";
     private static final int ERROR_DIALOG_REQUEST = 9001;
@@ -42,6 +52,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
     private static final float DEFAULT_ZOOM = 15.0f;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private EditText mSearchText;
     public NearbyPatientsFragment() {
     }
 
@@ -49,10 +60,44 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nearby_patients,container, false);
+        mSearchText = view.findViewById(R.id.inputSearch);
         getLocationPermission();
         //Checking if play services is working
         isServicesOK();
         return view;
+    }
+    public void init() {
+        Log.d(TAG, "init: Insode Init");
+        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH
+                        || i == EditorInfo.IME_ACTION_GO
+                        || keyEvent.getAction() == keyEvent.ACTION_DOWN
+                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
+                    Log.d(TAG, "onEditorAction: ");
+                    //implement map search
+                    geoLocate();
+                }
+                return false;
+            }
+        });
+    }
+    private void geoLocate() {
+        Log.d(TAG, "geoLocate: ");
+        String searchString = mSearchText.getText().toString();
+        Geocoder geocoder = new Geocoder(getActivity());
+        List<Address> list = new ArrayList<>();
+        try {
+            list = geocoder.getFromLocationName(searchString, 1);
+        } catch (IOException e) {
+            Log.e(TAG, "geoLocate: IOException" + e.getMessage());
+        }
+        if (list.size() > 0) {
+            Address address = list.get(0);
+            Log.d(TAG, "geoLocate: Found a location "+address.toString());
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM);
+        }
     }
 
     @Override
@@ -96,6 +141,8 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
     }
 
 
+
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -134,7 +181,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap= googleMap;
+        mMap = googleMap;
         setMapStyle(googleMap);
         if(mLocationPermissionGranted) {
             getDeviceCurrentLocation();
@@ -142,6 +189,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
             //Adds a blue marker
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            init();
         }
 //        LatLng sydney = new LatLng(-33.852, 151.211);
 //        googleMap.addMarker(new MarkerOptions().position(sydney)
