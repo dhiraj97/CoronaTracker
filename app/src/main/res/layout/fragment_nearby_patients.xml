@@ -40,9 +40,7 @@
                 android:maxLines="1"
                 android:textColor="#000"
                 android:textSize="15sp" />
-
         </RelativeLayout>
-
     </FrameLayout>
 
 </LinearLayout>

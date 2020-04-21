@@ -13,8 +13,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,12 +78,14 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                         || keyEvent.getAction() == keyEvent.ACTION_DOWN
                         || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
                     Log.d(TAG, "onEditorAction: ");
+                    hideKeyboard();
                     //implement map search
                     geoLocate();
                 }
                 return false;
             }
         });
+        hideKeyboard();
     }
     private void geoLocate() {
         Log.d(TAG, "geoLocate: ");
@@ -96,7 +100,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
         if (list.size() > 0) {
             Address address = list.get(0);
             Log.d(TAG, "geoLocate: Found a location "+address.toString());
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM);
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
     }
 
@@ -213,8 +217,11 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom) {
+    private void moveCamera(LatLng latLng, float zoom, String title) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+
+        MarkerOptions options = new MarkerOptions().position(latLng).title(title);
+        mMap.addMarker(options);
     }
     private void getDeviceCurrentLocation(){
         try{
@@ -225,7 +232,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "Home");
                         }
                         else{
                             Toast.makeText(getActivity(),"Unable to find location", Toast.LENGTH_SHORT).show();
@@ -236,5 +243,9 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
         } catch(SecurityException e){
             Log.e(TAG,""+e.getMessage());
         }
+    }
+    //Used to Hide the keyboard when the user is done using it
+    private void hideKeyboard() {
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }
