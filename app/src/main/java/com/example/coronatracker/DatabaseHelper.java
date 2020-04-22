@@ -114,6 +114,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+    //Getting data of patients by city
+    public Cursor getInfectedPatientsByCity()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        String query = "SELECT COUNT(id) AS patientCount,city FROM Patients GROUP BY(city) HAVING COUNT(id)>0";
+        cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+
+    }
 
 
     //Updates student record
