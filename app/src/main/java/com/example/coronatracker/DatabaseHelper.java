@@ -20,13 +20,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL4 = "age";
     public static final String COL5 = "streetAddress";
     public static final String COL6 = "city";
-    public static final String COL7 = "country";
-    public static final String COL8 = "postalCode";
-    public static final String COL9 = "latitude";
-    public static final String COL10 = "longitude";
-    public static final String COL11 = "dateOfInfection";
-    public static final String COL12 = "alive";
-    public static final String COL13 = "recovered";
+    public static final String COL7 = "province";
+    public static final String COL8 = "country";
+    public static final String COL9 = "postalCode";
+    public static final String COL10 = "latitude";
+    public static final String COL11 = "longitude";
+    public static final String COL12 = "dateOfInfection";
+    public static final String COL13 = "alive";
+    public static final String COL14 = "recovered";
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME +
                     "("
@@ -38,11 +39,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COL6 + " TEXT NOT NULL, "
                     + COL7 + " TEXT NOT NULL, "
                     + COL8 + " TEXT NOT NULL, "
-                    + COL9 + " REAL NOT NULL, "
+                    + COL9 + " TEXT NOT NULL, "
                     + COL10 + " REAL NOT NULL, "
-                    + COL11 + " TEXT NOT NULL, "
-                    + COL12 + " INTEGER NOT NULL, "
-                    + COL13 + " INTEGER NOT NULL);";
+                    + COL11 + " REAL NOT NULL, "
+                    + COL12 + " TEXT NOT NULL, "
+                    + COL13 + " INTEGER NOT NULL, "
+                    + COL14 + " INTEGER NOT NULL);";
 
     public static final String DROP_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -71,13 +73,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL4, patient.getAge());
         cv.put(COL5, patient.getStreetAddress());
         cv.put(COL6, patient.getCity());
-        cv.put(COL7, patient.getCountry());
-        cv.put(COL8, patient.getPostalCode());
-        cv.put(COL9, patient.getLatitude());
-        cv.put(COL10, patient.getLongitude());
-        cv.put(COL11, patient.getDateOfInfection());
-        cv.put(COL12, patient.getAlive());
-        cv.put(COL13, patient.getRecovered());
+        cv.put(COL7, patient.getProvince());
+        cv.put(COL8, patient.getCountry());
+        cv.put(COL9, patient.getPostalCode());
+        cv.put(COL10, patient.getLatitude());
+        cv.put(COL11, patient.getLongitude());
+        cv.put(COL12, patient.getDateOfInfection());
+        cv.put(COL13, patient.getAlive());
+        cv.put(COL14, patient.getRecovered());
 
 
         long result = db.insert(TABLE_NAME, null, cv);
@@ -123,13 +126,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL4, patient.getAge());
         cv.put(COL5, patient.getStreetAddress());
         cv.put(COL6, patient.getCity());
-        cv.put(COL7, patient.getCountry());
-        cv.put(COL8, patient.getPostalCode());
-        cv.put(COL9, patient.getLatitude());
-        cv.put(COL10, patient.getLongitude());
-        cv.put(COL11, patient.getDateOfInfection());
-        cv.put(COL12, patient.getAlive());
-        cv.put(COL13, patient.getRecovered());
+        cv.put(COL7, patient.getProvince());
+        cv.put(COL8, patient.getCountry());
+        cv.put(COL9, patient.getPostalCode());
+        cv.put(COL10, patient.getLatitude());
+        cv.put(COL11, patient.getLongitude());
+        cv.put(COL12, patient.getDateOfInfection());
+        cv.put(COL13, patient.getAlive());
+        cv.put(COL14, patient.getRecovered());
 
 
         int numOfRows = db.update(TABLE_NAME, cv, "id=" + patient.getId(), null);

@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class EnterDataFragment extends Fragment {
-    EditText txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity,
+    EditText txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity, txtProvince,
             txtCountry, txtPostalCode, txtLatitude, txtLongitude,
             txtDateOfInfection;
     RadioGroup aliveGroup, recoveredGroup;
@@ -67,7 +67,7 @@ public class EnterDataFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int patientId = 0;
-                Patient patient = new Patient(patientId, txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered);
+                Patient patient = new Patient(patientId, txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtProvince.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered);
 
                 insertStat = dbh.insertPatient(patient);
                 if (insertStat) {
@@ -86,6 +86,7 @@ public class EnterDataFragment extends Fragment {
         txtAge = view.findViewById(R.id.txtAge);
         txtStreetAddress = view.findViewById(R.id.txtStreetAddress);
         txtCity = view.findViewById(R.id.txtCity);
+        txtProvince = view.findViewById(R.id.txtProvince);
         txtCountry = view.findViewById(R.id.txtCountry);
         txtPostalCode = view.findViewById(R.id.txtPostalCode);
         txtLatitude = view.findViewById(R.id.txtLatitude);

@@ -25,7 +25,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //Provide a direct reference to each of the views within a data item
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtId, txtFirstName, txtLastName, txtAge, txtCity,
+        public TextView txtId, txtFirstName, txtLastName, txtAge, txtCity,txtProvince,
                 txtCountry, txtDateOfInfection, txtRecovered, txtAlive;
 
         public ViewHolder(@NonNull View itemView) {
@@ -35,6 +35,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             txtLastName = itemView.findViewById(R.id.txtLastName);
             txtAge = itemView.findViewById(R.id.txtAge);
             txtCity = itemView.findViewById(R.id.txtCity);
+            txtProvince = itemView.findViewById(R.id.txtProvince);
             txtCountry = itemView.findViewById(R.id.txtCountry);
             txtDateOfInfection = itemView.findViewById(R.id.txtDateOfInfection);
             txtAlive = itemView.findViewById(R.id.txtAlive);
@@ -61,6 +62,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((ViewHolder) holder).txtLastName.setText("Last Name: " + patient.getLastName());
         ((ViewHolder) holder).txtAge.setText("Age: " + patient.getAge());
         ((ViewHolder) holder).txtCity.setText("City: " + patient.getCity());
+        ((ViewHolder) holder).txtProvince.setText("Province: " + patient.getProvince());
         ((ViewHolder) holder).txtCountry.setText("Country: " + patient.getCountry());
         ((ViewHolder) holder).txtDateOfInfection.setText("Date of Infection: " + patient.getDateOfInfection());
         ((ViewHolder) holder).txtAlive.setText("Alive: " + patient.getAlive());

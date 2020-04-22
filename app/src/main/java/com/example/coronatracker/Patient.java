@@ -7,6 +7,7 @@ public class Patient {
     private int age;
     private String streetAddress;
     private String city;
+    private String province;
     private String country;
     private String postalCode;
     private double latitude ;
@@ -18,13 +19,14 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(int id, String firstName, String lastName, int age, String streetAddress, String city, String country, String postalCode, double latitude, double longitude, String dateOfInfection, int alive, int recovered) {
+    public Patient(int id, String firstName, String lastName, int age, String streetAddress, String city, String province,String country, String postalCode, double latitude, double longitude, String dateOfInfection, int alive, int recovered) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.streetAddress = streetAddress;
         this.city = city;
+        this.province = province;
         this.country = country;
         this.postalCode = postalCode;
         this.latitude = latitude;
@@ -80,6 +82,14 @@ public class Patient {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getCountry() {

@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 
 public class UpdateFragment extends Fragment {
 
-    EditText txtId,txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity,
+    EditText txtId,txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity,txtProvince,
             txtCountry, txtPostalCode, txtLatitude, txtLongitude,
             txtDateOfInfection;
     RadioGroup aliveGroup, recoveredGroup;
@@ -73,7 +73,7 @@ public class UpdateFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Patient patient = new Patient(Integer.parseInt(txtId.getText().toString()), txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered);
+                Patient patient = new Patient(Integer.parseInt(txtId.getText().toString()), txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtProvince.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered);
                 int numOfRows = dbh.updatePatient(patient);
                 if (numOfRows > 0) {
                     Toast.makeText(getContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
@@ -105,6 +105,7 @@ public class UpdateFragment extends Fragment {
                                 txtAge.setText(""+cursor.getInt(cursor.getColumnIndex("age")));
                                 txtStreetAddress.setText(""+cursor.getString(cursor.getColumnIndex("streetAddress")));
                                 txtCity.setText(""+cursor.getString(cursor.getColumnIndex("city")));
+                                txtProvince.setText(""+cursor.getString(cursor.getColumnIndex("province")));
                                 txtCountry.setText(""+cursor.getString(cursor.getColumnIndex("country")));
                                 txtPostalCode.setText(""+cursor.getString(cursor.getColumnIndex("postalCode")));
                                 txtLatitude.setText(""+cursor.getDouble(cursor.getColumnIndex("latitude")));
@@ -148,6 +149,7 @@ public class UpdateFragment extends Fragment {
         txtAge.setText("");
         txtStreetAddress.setText("");
         txtCity.setText("");
+        txtProvince.setText("");
         txtCountry.setText("");
         txtPostalCode.setText("");
         txtLatitude.setText("");
@@ -162,6 +164,7 @@ public class UpdateFragment extends Fragment {
         txtAge = view.findViewById(R.id.txtAge);
         txtStreetAddress = view.findViewById(R.id.txtStreetAddress);
         txtCity = view.findViewById(R.id.txtCity);
+        txtProvince = view.findViewById(R.id.txtProvince);
         txtCountry = view.findViewById(R.id.txtCountry);
         txtPostalCode = view.findViewById(R.id.txtPostalCode);
         txtLatitude = view.findViewById(R.id.txtLatitude);
