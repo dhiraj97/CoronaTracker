@@ -36,6 +36,7 @@
                     android:ems="10"
                     android:hint="Enter Last Name"
                     android:inputType="textPersonName" />
+
                 <EditText
                     android:id="@+id/txtAge"
                     android:layout_width="match_parent"
@@ -43,6 +44,7 @@
                     android:ems="10"
                     android:hint="Enter Age"
                     android:inputType="number" />
+
                 <EditText
                     android:id="@+id/txtStreetAddress"
                     android:layout_width="match_parent"
@@ -50,6 +52,7 @@
                     android:ems="10"
                     android:hint="Enter Street Address"
                     android:inputType="textPostalAddress" />
+
                 <EditText
                     android:id="@+id/txtCity"
                     android:layout_width="match_parent"
@@ -57,13 +60,15 @@
                     android:ems="10"
                     android:hint="Enter City"
                     android:inputType="textPostalAddress" />
+
                 <EditText
                     android:id="@+id/txtProvince"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Enter Province"
+                    android:hint="Enter State/Province"
                     android:inputType="textPostalAddress" />
+
                 <EditText
                     android:id="@+id/txtCountry"
                     android:layout_width="match_parent"
@@ -71,6 +76,7 @@
                     android:ems="10"
                     android:hint="Enter Country"
                     android:inputType="textPostalAddress" />
+
                 <EditText
                     android:id="@+id/txtPostalCode"
                     android:layout_width="match_parent"
@@ -78,6 +84,7 @@
                     android:ems="10"
                     android:hint="Enter Postal Code"
                     android:inputType="textPostalAddress" />
+
                 <EditText
                     android:id="@+id/txtLatitude"
                     android:layout_width="match_parent"
@@ -85,6 +92,7 @@
                     android:ems="10"
                     android:hint="Enter Latitude"
                     android:inputType="numberDecimal|numberSigned" />
+
                 <EditText
                     android:id="@+id/txtLongitude"
                     android:layout_width="match_parent"
@@ -92,6 +100,7 @@
                     android:ems="10"
                     android:hint="Enter Longitude"
                     android:inputType="numberDecimal|numberSigned" />
+
                 <EditText
                     android:id="@+id/txtDateOfInfection"
                     android:layout_width="match_parent"
@@ -109,6 +118,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
                     android:text="Alive: " />
+
                 <RadioGroup
                     android:id="@+id/aliveRadioGroup"
                     android:layout_width="match_parent"
@@ -140,6 +150,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="5dp"
                     android:text="Recovered: " />
+
                 <RadioGroup
                     android:id="@+id/recoveredRadioGroup"
                     android:layout_width="match_parent"
@@ -161,6 +172,7 @@
                         android:checked="false"
                         android:text="No" />
                 </RadioGroup>
+
                 <Button
                     android:id="@+id/btnSubmit"
                     android:layout_width="match_parent"
@@ -168,9 +180,8 @@
                     android:layout_margin="8dp"
                     android:background="@color/colorAccent"
                     android:shadowColor="#FFFFFF"
-                    android:textColor="@color/colorWhite"
                     android:text="Submit"
-                    />
+                    android:textColor="@color/colorWhite" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
