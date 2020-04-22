@@ -1,10 +1,13 @@
 package com.example.coronatracker;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -12,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.util.Calendar;
 
 public class EnterDataFragment extends Fragment {
     EditText txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity, txtProvince,
@@ -80,6 +85,40 @@ public class EnterDataFragment extends Fragment {
 
         return view;
     }
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        txtDateOfInfection.setInputType(InputType.TYPE_NULL);
+        txtDateOfInfection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker();
+            }
+        });
+    }
+
+    private void showDatePicker() {
+        DatePickerFragment date = new DatePickerFragment();
+        Calendar calender = Calendar.getInstance();
+        Bundle args = new Bundle();
+        args.putInt("year", calender.get(Calendar.YEAR));
+        args.putInt("month", calender.get(Calendar.MONTH));
+        args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
+        date.setArguments(args);
+        date.setCallBack(ondate);
+        date.show(getFragmentManager(), "Date Picker");
+    }
+
+    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+
+            txtDateOfInfection.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1)
+                    + "/" + String.valueOf(year));
+        }
+    };
+
     private void initialize(View view) {
         txtFirstName = view.findViewById(R.id.txtFirstName);
         txtLastName = view.findViewById(R.id.txtLastName);
