@@ -182,8 +182,8 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
         for (int i = 0; i < mPatients.size(); i++) {
             Marker mMarker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(mPatients.get(i).getLatitude(), mPatients.get(i).getLongitude()))
-                    .title(mPatients.get(i).getAge() + ", " + mPatients.get(i).getGender())
-                    .snippet(mPatients.get(i).getDateOfInfection())
+                    .title(mPatients.get(i).getAge() + ", " + mPatients.get(i).getGender().substring(0, 1).toUpperCase() + mPatients.get(i).getGender().substring(1))
+                    .snippet("(" + mPatients.get(i).getDateOfInfection() + ")")
                     .icon(BitmapDescriptorFactory.fromResource(getMapIcon(mPatients.get(i)))));
             mMarker.setTag(0);
             Log.e(TAG, "onMapReady: " + mPatients.get(i).getLatitude() + ", " + mPatients.get(i).getLongitude() + "");
