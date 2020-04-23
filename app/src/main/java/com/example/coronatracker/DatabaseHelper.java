@@ -133,15 +133,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int count[]=new int[3];
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor1,cursor2,cursor3;
-        String query1 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 5 AND 20";
-        String query2 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 5 AND 20";
-        String query3 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 5 AND 20";
+        String query1 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 1 AND 20";
+        String query2 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 20 AND 45";
+        String query3 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 45 AND 80";
         cursor1=db.rawQuery(query1,null);
         cursor2=db.rawQuery(query2,null);
         cursor3=db.rawQuery(query3,null);
-        count[0] = (cursor1.getInt(cursor1.getColumnIndex("ageCount")));
-        count[1] = (cursor1.getInt(cursor2.getColumnIndex("ageCount")));
-        count[2] = (cursor1.getInt(cursor3.getColumnIndex("ageCount")));
+        if (cursor1 != null) {
+            cursor1.moveToFirst();
+            count[0] =  cursor1.getInt(cursor1.getColumnIndex("ageCount"));
+        }
+        if (cursor2!= null) {
+            cursor2.moveToFirst();
+            count[1] =  cursor2.getInt(cursor2.getColumnIndex("ageCount"));
+        }
+        if(cursor3!=null)
+        {
+            cursor3.moveToFirst();
+            count[2] = cursor3.getInt(cursor3.getColumnIndex("ageCount"));
+        }
         return count;
     }
     //Updates student record
