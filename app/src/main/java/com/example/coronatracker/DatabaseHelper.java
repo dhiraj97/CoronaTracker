@@ -127,18 +127,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
-    //function to retrive count of patient on age basis
-    public Cursor getCount(int age1,int age2)
+    //function to retrieve count of patient on age basis
+    public int[] getCount()
     {
+        int count[]=new int[3];
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor;
-        String query = "SELECT COUNT(age) from "+TABLE_NAME+" WHERE age BETWEEN "+age1+" AND "+age2;
-        SQLiteStatement statement=db.compileStatement(query);
-        cursor=db.rawQuery(query,null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor;
+        Cursor cursor1,cursor2,cursor3;
+        String query1 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 5 AND 20";
+        String query2 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 5 AND 20";
+        String query3 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 5 AND 20";
+        cursor1=db.rawQuery(query1,null);
+        cursor2=db.rawQuery(query2,null);
+        cursor3=db.rawQuery(query3,null);
+        count[0] = (cursor1.getInt(cursor1.getColumnIndex("ageCount")));
+        count[1] = (cursor1.getInt(cursor2.getColumnIndex("ageCount")));
+        count[2] = (cursor1.getInt(cursor3.getColumnIndex("ageCount")));
+        return count;
     }
     //Updates student record
     public int updatePatient(Patient patient) {
