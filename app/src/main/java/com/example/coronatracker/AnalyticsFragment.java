@@ -162,11 +162,9 @@ public class AnalyticsFragment extends Fragment {
             }
         });
 
-           
         //Pie Data
         PieData pieData = new PieData(pieDataSet);
-
-
+        //Setting Custom values
         pieData.setValueTextColor(Color.WHITE);
         pieData.setValueTextSize(25f);
         pieChart.setData(pieData);

@@ -47,50 +47,14 @@ public class UpdateFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_update, container, false);
 
+        //Initializing all Widget.
         initialize(view);
 
+        //Changing Text of Button
         btnSubmit.setText("Update");
 
-        aliveGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.alivePositive:
-                        isAlive = 1;
-                        break;
-                    case R.id.aliveNegative:
-                        isAlive = 0;
-                        break;
-                }
-            }
-        });
-        recoveredGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.recoveredPositive:
-                        isRecovered = 1;
-                        break;
-                    case R.id.recoveredNegative:
-                        isRecovered = 0;
-                        break;
-                }
-            }
-        });
-        genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.male:
-                        gender = "male";
-                        break;
-                    case R.id.female:
-                        gender = "female";
-                        break;
-                }
-            }
-        });
-
+        //Adding listener to all radio button
+        addRadioButtonListener();
 
         dbh = new DatabaseHelper(getActivity());
 
@@ -126,7 +90,6 @@ public class UpdateFragment extends Fragment {
 
                     Cursor cursor = dbh.viewRecord(Integer.parseInt(txtId.getText().toString()));
                     if (cursor.getCount() == 0 || cursor == null) {
-                        //Toast.makeText(getContext(), "No record Found", Toast.LENGTH_SHORT).show();
                         linearLayEnterDataFragment.setVisibility(View.GONE);
                         tvNoRecords.setVisibility(View.VISIBLE);
                     } else {
@@ -184,6 +147,49 @@ public class UpdateFragment extends Fragment {
         return view;
     }
 
+    private void addRadioButtonListener() {
+
+        aliveGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.alivePositive:
+                        isAlive = 1;
+                        break;
+                    case R.id.aliveNegative:
+                        isAlive = 0;
+                        break;
+                }
+            }
+        });
+        recoveredGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.recoveredPositive:
+                        isRecovered = 1;
+                        break;
+                    case R.id.recoveredNegative:
+                        isRecovered = 0;
+                        break;
+                }
+            }
+        });
+        genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.male:
+                        gender = "male";
+                        break;
+                    case R.id.female:
+                        gender = "female";
+                        break;
+                }
+            }
+        });
+    }
+
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         txtDateOfInfection.setInputType(InputType.TYPE_NULL);
@@ -217,6 +223,7 @@ public class UpdateFragment extends Fragment {
         }
     };
 
+    //clearing all fields
     private void clearFields() {
         txtFirstName.setText("");
         txtLastName.setText("");
@@ -231,6 +238,7 @@ public class UpdateFragment extends Fragment {
         txtDateOfInfection.setText("");
     }
 
+    //Initialising all widget
     private void initialize(View view) {
         txtId = view.findViewById(R.id.txtUpdateId);
         txtFirstName = view.findViewById(R.id.txtFullName);
@@ -267,6 +275,7 @@ public class UpdateFragment extends Fragment {
         tvNoRecords.setVisibility(View.GONE);
     }
 
+    //Validating all input using Helper class
     private boolean validateInput() {
         if (Helper.ValidateTextStringData(txtFirstName)
                 && Helper.ValidateTextStringData(txtLastName)

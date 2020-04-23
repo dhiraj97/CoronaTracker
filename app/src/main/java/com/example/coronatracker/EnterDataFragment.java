@@ -153,6 +153,7 @@ public class EnterDataFragment extends Fragment {
         return view;
     }
 
+    //Initializing All fields
     private void initialize(View view) {
         txtFirstName = view.findViewById(R.id.txtFullName);
         txtLastName = view.findViewById(R.id.txtLastName);
@@ -194,6 +195,7 @@ public class EnterDataFragment extends Fragment {
         });
     }
 
+    //Validating input using Helper class
     private boolean validateInput() {
         if (Helper.ValidateTextStringData(txtFirstName)
                 && Helper.ValidateTextStringData(txtLastName)
@@ -214,6 +216,7 @@ public class EnterDataFragment extends Fragment {
     }
 
 
+    //Clearing all fields
     private void clearFields() {
         txtFirstName.setText("");
         txtLastName.setText("");

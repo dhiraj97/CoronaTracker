@@ -88,7 +88,7 @@ public class DeleteFragment extends Fragment {
                         txtAgeGender.setText(patient.getAge() + ", " + patient.getGender().substring(0, 1).toUpperCase() + patient.getGender().substring(1));
                         txtFullAddress.setText(patient.getStreetAddress() + ", " + patient.getCity() + ", " + patient.getProvince() + ", " + patient.getCountry() + ", " + patient.getPostalCode());
                         txtDateOfInfection.setText("Date of Infection: " + patient.getDateOfInfection());
-                        imgProfile.setImageResource(getMapIcon(patient));
+                        imgProfile.setImageResource(Helper.getMapIcon(patient));
                         String mCurrentStatus = "";
                         if (patient.getAlive() == 1) {
                             if (patient.getRecovered() == 1) {
@@ -144,16 +144,5 @@ public class DeleteFragment extends Fragment {
         return view;
     }
 
-    public int getMapIcon(Patient patient) {
 
-        if (patient.getAlive() == 0) {
-            return R.drawable.death;
-        } else if (patient.getRecovered() == 1) {
-            return R.drawable.discharged;
-        } else if (patient.getGender().equals("male")) {
-            return R.drawable.activemale;
-        } else {
-            return R.drawable.activefemale;
-        }
-    }
 }

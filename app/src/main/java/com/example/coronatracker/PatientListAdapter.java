@@ -1,7 +1,6 @@
 package com.example.coronatracker;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((ViewHolder) holder).txtAgeGender.setText(patient.getAge() + ", " + patient.getGender().substring(0, 1).toUpperCase() + patient.getGender().substring(1));
         ((ViewHolder) holder).txtFullAddress.setText(patient.getStreetAddress() + ", " + patient.getCity() + ", " + patient.getProvince() + ", " + patient.getCountry() + ", " + patient.getPostalCode());
         ((ViewHolder) holder).txtDateOfInfection.setText("Date of Infection: " + patient.getDateOfInfection());
-        ((ViewHolder) holder).imgProfile.setImageResource(getMapIcon(patient));
+        ((ViewHolder) holder).imgProfile.setImageResource(Helper.getMapIcon(patient));
         String mCurrentStatus = "";
         if (patient.getAlive() == 1) {
             if (patient.getRecovered() == 1) {
@@ -54,18 +53,6 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return viewHolder;
     }
 
-    public int getMapIcon(Patient patient) {
-        Log.d("VIVEK", "isServicesOK: checking google services version" + patient.getGender());
-        if (patient.getAlive() == 0) {
-            return R.drawable.death;
-        } else if (patient.getRecovered() == 1) {
-            return R.drawable.discharged;
-        } else if (patient.getGender().equals("male")) {
-            return R.drawable.activemale;
-        } else {
-            return R.drawable.activefemale;
-        }
-    }
 
     //Provide a direct reference to each of the views within a data item
     class ViewHolder extends RecyclerView.ViewHolder {

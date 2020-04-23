@@ -184,40 +184,18 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                     .position(new LatLng(mPatients.get(i).getLatitude(), mPatients.get(i).getLongitude()))
                     .title(mPatients.get(i).getAge() + ", " + mPatients.get(i).getGender().substring(0, 1).toUpperCase() + mPatients.get(i).getGender().substring(1))
                     .snippet("(" + mPatients.get(i).getDateOfInfection() + ")")
-                    .icon(BitmapDescriptorFactory.fromResource(getMapIcon(mPatients.get(i)))));
+                    .icon(BitmapDescriptorFactory.fromResource(Helper.getMapIcon(mPatients.get(i)))));
             mMarker.setTag(0);
-            Log.e(TAG, "onMapReady: " + mPatients.get(i).getLatitude() + ", " + mPatients.get(i).getLongitude() + "" + getMapIcon(mPatients.get(i)));
+            Log.e(TAG, "onMapReady: " + mPatients.get(i).getLatitude() + ", " + mPatients.get(i).getLongitude() + "" + Helper.getMapIcon(mPatients.get(i)));
         }
 
         // Set a listener for marker click.
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                /*
-                Integer clickCount = (Integer) marker.getTag();
-
-                // Check if a click count was set, then display the click count.
-                if (clickCount != null) {
-                    clickCount = clickCount + 1;
-                    marker.setTag(clickCount);
-                    Toast.makeText(getActivity(), marker.getTitle() + " has been clicked " + clickCount + " times.", Toast.LENGTH_SHORT).show();
-                }*/
                 return false;
             }
         });
-    }
-
-    public int getMapIcon(Patient patient) {
-
-        if (patient.getAlive() == 0) {
-            return R.drawable.death_small;
-        } else if (patient.getRecovered() == 1) {
-            return R.drawable.discharged_small;
-        } else if (patient.getGender().equals("male")) {
-            return R.drawable.activemale_small;
-        } else {
-            return R.drawable.activefemale_small;
-        }
     }
 
 
@@ -299,6 +277,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
         }
     }
 
+    //Setting Device current location
     private void setDeviceCurrentLocation() {
         try{
             if(mLocationPermissionGranted){
@@ -309,8 +288,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                         if(task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "Home");
-                        }
-                        else{
+                        } else{
                             Toast.makeText(getActivity(),"Unable to find location", Toast.LENGTH_SHORT).show();
                         }
                     }
