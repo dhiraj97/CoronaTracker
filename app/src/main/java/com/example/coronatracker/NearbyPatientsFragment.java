@@ -4,19 +4,13 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.location.Address;
-import android.location.Geocoder;
+import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,8 +29,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,7 +41,6 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,7 +55,9 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
     private static final float DEFAULT_ZOOM = 15.0f;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private EditText mSearchText;
+    private DatabaseHelper dbh;
+    private List<Patient> mPatients = new ArrayList<>();
+
     public NearbyPatientsFragment() {
     }
 
@@ -68,41 +65,77 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nearby_patients,container, false);
-        //mSearchText = view.findViewById(R.id.inputSearch);
+
+        //Fetching patient data from SQLite Database and setting in Arraylist.
+        fetchPatientData();
+
         // Initialize the SDK
         Places.initialize(getActivity(), apiKey);
 
+        // Initialize the AutocompleteSupportFragment and setting listener.
+        setAutoCompleteFragment();
+
+        //Validating location permission, If not granted, Request to user
+        ValidateLocationPermission();
+
+        //Checking if play services is working
+        isServicesOK();
+
+        return view;
+    }
+
+    private void setAutoCompleteFragment() {
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                moveCamera(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), DEFAULT_ZOOM, place.getName());
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+    }
 
+    private void fetchPatientData() {
 
-        //Validating location permission, If not granted, Request to user
-        ValidateLocationPermission();
-        //Checking if play services is working
-        isServicesOK();
+        dbh = new DatabaseHelper(getActivity());
+        Cursor cursor = dbh.viewData();
+        if (cursor.getCount() == 0) {
+            Toast.makeText(getContext(), "No record Found", Toast.LENGTH_SHORT).show();
 
-
-        return view;
+        } else {
+            if (cursor.moveToFirst()) {
+                do {
+                    //Creates a student object and passes that object in the Arraylist
+                    Patient patient = new Patient();
+                    patient.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                    patient.setFirstName(cursor.getString(cursor.getColumnIndex("firstName")));
+                    patient.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
+                    patient.setAge(cursor.getInt(cursor.getColumnIndex("age")));
+                    patient.setCity(cursor.getString(cursor.getColumnIndex("city")));
+                    patient.setProvince(cursor.getString(cursor.getColumnIndex("province")));
+                    patient.setCountry(cursor.getString(cursor.getColumnIndex("country")));
+                    patient.setDateOfInfection(cursor.getString(cursor.getColumnIndex("dateOfInfection")));
+                    patient.setAlive(cursor.getInt(cursor.getColumnIndex("alive")));
+                    patient.setRecovered(cursor.getInt(cursor.getColumnIndex("recovered")));
+                    patient.setLatitude(cursor.getDouble(cursor.getColumnIndex("latitude")));
+                    patient.setLongitude(cursor.getDouble(cursor.getColumnIndex("longitude")));
+                    mPatients.add(patient);
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+        dbh.close();
     }
 
     @Override
@@ -114,10 +147,8 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
         Log.e(TAG, "onViewCreated: After Init created");
     }
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case 1: {
                 // If request is cancelled, the result arrays are empty.
@@ -130,16 +161,14 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-
+                    setMapLocationFunctionality(false);
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request.
         }
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -148,45 +177,44 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
         Log.e(TAG, "onMapReady: Map ready, mLocationPermissionGranted: " + mLocationPermissionGranted);
         setMapLocationFunctionality(mLocationPermissionGranted);
         Log.e(TAG, "onMapReady: After setMapLocationFunctionality, mLocationPermissionGranted: " + mLocationPermissionGranted);
-//        LatLng sydney = new LatLng(-33.852, 151.211);
-//        googleMap.addMarker(new MarkerOptions().position(sydney)
-//                .title("Marker in Sydney"));
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
 
+        for (int i = 0; i < mPatients.size(); i++) {
+            Marker mMarker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(mPatients.get(i).getLatitude(), mPatients.get(i).getLongitude()))
+                    .title(mPatients.get(i).getAge() + ", " + mPatients.get(i).getAlive())
+                    .snippet(mPatients.get(i).getDateOfInfection())
+                    .icon(BitmapDescriptorFactory.fromResource(getMapIcon(mPatients.get(i)))));
+            mMarker.setTag(0);
+            Log.e(TAG, "onMapReady: " + mPatients.get(i).getLatitude() + ", " + mPatients.get(i).getLongitude());
+        }
 
-    public void addSearchTextActionListener() {
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        // Set a listener for marker click.
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH
-                        || i == EditorInfo.IME_ACTION_GO
-                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
-                    Log.d(TAG, "addSearchTextActionListener: Calling on text change");
-                    hideKeyboard();
-                    //implement map search
-                    geoLocate();
+            public boolean onMarkerClick(Marker marker) {
+                Integer clickCount = (Integer) marker.getTag();
+
+                // Check if a click count was set, then display the click count.
+                if (clickCount != null) {
+                    clickCount = clickCount + 1;
+                    marker.setTag(clickCount);
+                    Toast.makeText(getActivity(), marker.getTitle() + " has been clicked " + clickCount + " times.", Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
         });
-        hideKeyboard();
     }
-    private void geoLocate() {
-        Log.d(TAG, "geoLocate: ");
-        String searchString = mSearchText.getText().toString();
-        Geocoder geocoder = new Geocoder(getActivity());
-        List<Address> list = new ArrayList<>();
-        try {
-            list = geocoder.getFromLocationName(searchString, 1);
-        } catch (IOException e) {
-            Log.e(TAG, "geoLocate: IOException" + e.getMessage());
-        }
-        if (list.size() > 0) {
-            Address address = list.get(0);
-            Log.d(TAG, "geoLocate: Found a location "+address.toString());
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
+
+    public int getMapIcon(Patient patient) {
+
+        if (patient.getAlive() == 0) {
+            return R.drawable.death;
+        } else if (patient.getRecovered() == 1) {
+            return R.drawable.discharged;
+        } else if (patient.getGender() == "male") {
+            return R.drawable.activemale;
+        } else {
+            return R.drawable.activefemale;
         }
     }
 
@@ -292,15 +320,11 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
     }
 
 
+    //Method to reuse for setting up Camera.
     private void moveCamera(LatLng latLng, float zoom, String title) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
         MarkerOptions options = new MarkerOptions().position(latLng).title(title);
         mMap.addMarker(options);
     }
 
-    //Used to Hide the keyboard when the user is done using it
-    private void hideKeyboard() {
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
 }
