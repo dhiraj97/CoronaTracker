@@ -18,29 +18,7 @@
             android:layout_marginRight="10dp"
             android:background="@color/colorWhite"
             android:elevation="10dp">
-            <!--
-                        <ImageView
-                            android:id="@+id/icSearch"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:src="@drawable/ic_search" />
 
-                        <EditText
-                            android:id="@+id/inputSearch"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@+id/icSearch"
-                            android:hint="Enter Address, city or Zip Code"
-                            android:imeOptions="actionSearch"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:textColor="#000"
-                            android:textSize="15sp" />
-            -->
             <fragment
                 android:id="@+id/autocomplete_fragment"
                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"

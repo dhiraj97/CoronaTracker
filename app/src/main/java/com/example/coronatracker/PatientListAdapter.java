@@ -1,7 +1,6 @@
 package com.example.coronatracker;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.coronatracker.R;
 
 import java.util.List;
 
@@ -22,26 +19,26 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mList = list;
     }
 
-    //Provide a direct reference to each of the views within a data item
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView txtId, txtFirstName, txtLastName, txtAge, txtCity,txtProvince,
-                txtCountry, txtDateOfInfection, txtRecovered, txtAlive, txtGender;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtId = itemView.findViewById(R.id.txtId);
-            txtFirstName = itemView.findViewById(R.id.txtFirstName);
-            txtLastName = itemView.findViewById(R.id.txtLastName);
-            txtAge = itemView.findViewById(R.id.txtAge);
-            txtCity = itemView.findViewById(R.id.txtCity);
-            txtProvince = itemView.findViewById(R.id.txtProvince);
-            txtCountry = itemView.findViewById(R.id.txtCountry);
-            txtDateOfInfection = itemView.findViewById(R.id.txtDateOfInfection);
-            txtAlive = itemView.findViewById(R.id.txtAlive);
-            txtRecovered = itemView.findViewById(R.id.txtRecovered);
-            txtGender = itemView.findViewById(R.id.txtGender);
+    @Override
+    //Involves populating data into the item through holder
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Patient patient = mList.get(position);
+        ((ViewHolder) holder).txtId.setText("(" + patient.getId() + ")");
+        ((ViewHolder) holder).txtFullName.setText(patient.getLastName() + " " + patient.getFirstName());
+        ((ViewHolder) holder).txtAgeGender.setText(patient.getAge() + ", " + patient.getGender());
+        ((ViewHolder) holder).txtFullAddress.setText(patient.getStreetAddress() + ", " + patient.getCity() + ", " + patient.getProvince() + ", " + patient.getCountry() + ", " + patient.getPostalCode());
+        ((ViewHolder) holder).txtDateOfInfection.setText("Date of Infection: " + patient.getDateOfInfection());
+        String mCurrentStatus = "";
+        if (patient.getAlive() == 1) {
+            if (patient.getRecovered() == 1) {
+                mCurrentStatus = "Recovered";
+            } else {
+                mCurrentStatus = "Still Infected";
+            }
+        } else {
+            mCurrentStatus = "Death";
         }
+        ((ViewHolder) holder).txtCurrentStatus.setText("Current Status: " + mCurrentStatus);
 
     }
 
@@ -54,22 +51,23 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return viewHolder;
     }
 
-    @Override
-    //Involves populating data into the item through holder
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Patient patient = mList.get(position);
-        ((ViewHolder) holder).txtId.setText("Id: " + patient.getId());
-        ((ViewHolder) holder).txtFirstName.setText("First Name: " + patient.getFirstName());
-        ((ViewHolder) holder).txtLastName.setText("Last Name: " + patient.getLastName());
-        ((ViewHolder) holder).txtGender.setText("Gender: " + patient.getGender());
-        ((ViewHolder) holder).txtAge.setText("Age: " + patient.getAge());
-        ((ViewHolder) holder).txtCity.setText("City: " + patient.getCity());
-        ((ViewHolder) holder).txtProvince.setText("Province: " + patient.getProvince());
-        ((ViewHolder) holder).txtCountry.setText("Country: " + patient.getCountry());
-        ((ViewHolder) holder).txtDateOfInfection.setText("Date of Infection: " + patient.getDateOfInfection());
-        ((ViewHolder) holder).txtAlive.setText("Alive: " + patient.getAlive());
-        ((ViewHolder) holder).txtRecovered.setText("Recovered: " + patient.getRecovered());
+    //Provide a direct reference to each of the views within a data item
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView txtId, txtFullName, txtAgeGender, txtFullAddress, txtDateOfInfection, txtCurrentStatus;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtId = itemView.findViewById(R.id.txtId);
+            txtFullName = itemView.findViewById(R.id.txtFullName);
+            txtAgeGender = itemView.findViewById(R.id.txtAgeGender);
+            txtFullAddress = itemView.findViewById(R.id.txtFullAddress);
+            txtDateOfInfection = itemView.findViewById(R.id.txtDateOfInfection);
+            txtCurrentStatus = itemView.findViewById(R.id.txtCurrentStatus);
+        }
+
     }
+
 
     @Override
     //Returns the total count of items in the list

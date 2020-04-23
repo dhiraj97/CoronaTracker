@@ -2,7 +2,6 @@ package com.example.coronatracker;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,14 +43,15 @@ public class ViewDataFragment extends Fragment {
                     patient.setFirstName(cursor.getString(cursor.getColumnIndex("firstName")));
                     patient.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
                     patient.setAge(cursor.getInt(cursor.getColumnIndex("age")));
-                    patient.setGender(cursor.getString(cursor.getColumnIndex("gender")));
                     patient.setCity(cursor.getString(cursor.getColumnIndex("city")));
+                    patient.setStreetAddress(cursor.getString(cursor.getColumnIndex("streetAddress")));
+                    patient.setPostalCode(cursor.getString(cursor.getColumnIndex("postalCode")));
                     patient.setProvince(cursor.getString(cursor.getColumnIndex("province")));
                     patient.setCountry(cursor.getString(cursor.getColumnIndex("country")));
                     patient.setDateOfInfection(cursor.getString(cursor.getColumnIndex("dateOfInfection")));
                     patient.setAlive(cursor.getInt(cursor.getColumnIndex("alive")));
                     patient.setRecovered(cursor.getInt(cursor.getColumnIndex("recovered")));
-
+                    patient.setGender(cursor.getString(cursor.getColumnIndex("gender")));
                     mPatients.add(patient);
                 } while (cursor.moveToNext());
             }

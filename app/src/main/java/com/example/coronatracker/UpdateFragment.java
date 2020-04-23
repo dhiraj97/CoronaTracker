@@ -194,8 +194,8 @@ public class UpdateFragment extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
 
-            txtDateOfInfection.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(monthOfYear+1)
-                    + "/" + String.valueOf(year));
+            txtDateOfInfection.setText(dayOfMonth + "/" + (monthOfYear + 1)
+                    + "/" + year);
         }
     };
     private void clearFields() {
@@ -214,11 +214,11 @@ public class UpdateFragment extends Fragment {
     }
     private void initialize(View view) {
         txtId = view.findViewById(R.id.txtUpdateId);
-        txtFirstName = view.findViewById(R.id.txtFirstName);
+        txtFirstName = view.findViewById(R.id.txtFullName);
         txtLastName = view.findViewById(R.id.txtLastName);
-        txtAge = view.findViewById(R.id.txtAge);
+        txtAge = view.findViewById(R.id.txtAgeGender);
         txtStreetAddress = view.findViewById(R.id.txtStreetAddress);
-        txtCity = view.findViewById(R.id.txtCity);
+        txtCity = view.findViewById(R.id.txtFullAddress);
         txtProvince = view.findViewById(R.id.txtProvince);
         txtCountry = view.findViewById(R.id.txtCountry);
         txtPostalCode = view.findViewById(R.id.txtPostalCode);
