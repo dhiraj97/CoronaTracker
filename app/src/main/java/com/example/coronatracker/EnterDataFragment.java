@@ -191,4 +191,9 @@ public class EnterDataFragment extends Fragment {
             }
         });
     }
+
+    private boolean validateInput() {
+
+        return true;
+    }
 }
