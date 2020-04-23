@@ -27,6 +27,18 @@ public class DeleteFragment extends Fragment {
         btnDelete = view.findViewById(R.id.btnDelete);
         dbh = new DatabaseHelper(getActivity());
 
+        dbh = new DatabaseHelper(getActivity());
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int count = dbh.deleteRecord(Integer.parseInt(txtId.getText().toString()));
+                if (count > 0) {
+                    Toast.makeText(getContext(), "Deleted Record Successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Error: Deleted Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         return view;
     }
 }
