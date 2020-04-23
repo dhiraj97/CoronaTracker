@@ -52,7 +52,7 @@ import java.util.List;
 
 public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "NearbyPatientsFragment";
-    private static final String apiKey = "AIzaSyAsnX8iDDgW6O3wYpgrBKF0lARV4K8X994";
+    private static final String apiKey = "AIzaSyC1D_ZnFID-vHkPir4F8WI23qjeFCNg2pc";
     private static final int ERROR_DIALOG_REQUEST = 9001;
     public static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     public static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;

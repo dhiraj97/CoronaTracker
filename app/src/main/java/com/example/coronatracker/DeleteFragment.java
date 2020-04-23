@@ -25,6 +25,7 @@ public class DeleteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_delete,container, false);txtId = view.findViewById(R.id.txtDeletePatientById);
         btnDelete = view.findViewById(R.id.btnDelete);
+        dbh = new DatabaseHelper(getActivity());
 
         dbh = new DatabaseHelper(getActivity());
         btnDelete.setOnClickListener(new View.OnClickListener() {
