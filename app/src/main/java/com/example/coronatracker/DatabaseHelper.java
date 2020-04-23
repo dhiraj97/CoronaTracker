@@ -5,11 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 
 import androidx.annotation.Nullable;
-
-import com.example.coronatracker.Patient;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -47,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COL12 + " TEXT NOT NULL, "
                     + COL13 + " INTEGER NOT NULL, "
                     + COL14 + " INTEGER NOT NULL, "
-                    + COL15 + " INTEGER NOT NULL);";
+                    + COL15 + " TEXT NOT NULL);";
 
     public static final String DROP_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -88,11 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         long result = db.insert(TABLE_NAME, null, cv);
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return result != -1;
     }
 
     //Gets all records from the student table and stores in a cursor
@@ -133,7 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //function to retrieve count of patient on age basis
     public int[] getCount()
     {
-        int count[]=new int[3];
+        int[] count = new int[3];
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor1,cursor2,cursor3;
         String query1 = "SELECT COUNT(age) AS ageCount from "+TABLE_NAME+" WHERE age BETWEEN 1 AND 20";

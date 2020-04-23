@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,14 +26,16 @@ import java.util.Calendar;
 
 public class UpdateFragment extends Fragment {
 
-    EditText txtId,txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity,txtProvince,
+    EditText txtId, txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity, txtProvince,
             txtCountry, txtPostalCode, txtLatitude, txtLongitude,
             txtDateOfInfection;
     RadioGroup aliveGroup, recoveredGroup, genderGroup;
-    RadioButton btnAlivePositive, btnAliveNegative, btnRecoveredPositive, btnRecoveredNegative;
+    RadioButton rbAlivePositive, rbAliveNegative, rbRecoveredPositive, rbRecoveredNegative, rbMale, rbFemale;
+    LinearLayout linearAutoComplete, linearLayEnterDataFragment;
+    TextView tvNoRecords;
     int isAlive = 1;
     int isRecovered = 1;
-    String gender;
+    String gender = "male";
     Button btnSubmit;
     DatabaseHelper dbh;
 
@@ -41,7 +45,7 @@ public class UpdateFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_update,container, false);
+        View view = inflater.inflate(R.layout.fragment_update, container, false);
 
         initialize(view);
 
@@ -93,15 +97,21 @@ public class UpdateFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Patient patient = new Patient(Integer.parseInt(txtId.getText().toString()), txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtProvince.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered, gender);
-                int numOfRows = dbh.updatePatient(patient);
+                int numOfRows = 0;
+                if (validateInput()) {
+                    Patient patient = new Patient(Integer.parseInt(txtId.getText().toString()), txtFirstName.getText().toString(), txtLastName.getText().toString(), Integer.parseInt(txtAge.getText().toString()), txtStreetAddress.getText().toString(), txtCity.getText().toString(), txtProvince.getText().toString(), txtCountry.getText().toString(), txtPostalCode.getText().toString(), Double.parseDouble(txtLatitude.getText().toString()), Double.parseDouble(txtLongitude.getText().toString()), txtDateOfInfection.getText().toString(), isAlive, isRecovered, gender);
+                    numOfRows = dbh.updatePatient(patient);
+                }
                 if (numOfRows > 0) {
-                    Toast.makeText(getContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Successfully Updated.", Toast.LENGTH_SHORT).show();
+                    clearFields();
+                    txtId.setText("");
                 } else {
-                    Toast.makeText(getContext(), "Error Updating", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error: Enter valid input", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
         txtId.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -113,46 +123,56 @@ public class UpdateFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 clearFields();
                 if (charSequence.length() != 0) {
-                    dbh = new DatabaseHelper(getActivity());
-                    Cursor cursor = dbh.viewRecord(Integer.parseInt(txtId.getText().toString()));
-                    if (cursor == null) {
-                        Toast.makeText(getContext(), "No record Found", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (cursor.moveToFirst()) {
-                            do {
-                                txtFirstName.setText("" + cursor.getString(cursor.getColumnIndex("firstName")));
-                                txtLastName.setText("" + cursor.getString(cursor.getColumnIndex("lastName")));
-                                txtAge.setText(""+cursor.getInt(cursor.getColumnIndex("age")));
-                                txtStreetAddress.setText(""+cursor.getString(cursor.getColumnIndex("streetAddress")));
-                                txtCity.setText(""+cursor.getString(cursor.getColumnIndex("city")));
-                                txtProvince.setText(""+cursor.getString(cursor.getColumnIndex("province")));
-                                txtCountry.setText(""+cursor.getString(cursor.getColumnIndex("country")));
-                                txtPostalCode.setText(""+cursor.getString(cursor.getColumnIndex("postalCode")));
-                                txtLatitude.setText(""+cursor.getDouble(cursor.getColumnIndex("latitude")));
-                                txtLongitude.setText(""+cursor.getDouble(cursor.getColumnIndex("longitude")));
-                                txtDateOfInfection.setText(""+cursor.getString(cursor.getColumnIndex("dateOfInfection")));
 
-                                switch (cursor.getInt(cursor.getColumnIndex("alive"))) {
-                                    case 0:
-                                        btnAliveNegative.setChecked(true);
-                                        break;
-                                    case 1:
-                                        btnAlivePositive.setChecked(true);
-                                        break;
-                                }
-                                switch (cursor.getInt(cursor.getColumnIndex("recovered"))) {
-                                    case 0:
-                                        btnRecoveredNegative.setChecked(true);
-                                        break;
-                                    case 1:
-                                        btnRecoveredPositive.setChecked(true);
-                                        break;
-                                }
-                            } while (cursor.moveToNext());
+                    Cursor cursor = dbh.viewRecord(Integer.parseInt(txtId.getText().toString()));
+                    if (cursor.getCount() == 0 || cursor == null) {
+                        //Toast.makeText(getContext(), "No record Found", Toast.LENGTH_SHORT).show();
+                        linearLayEnterDataFragment.setVisibility(View.GONE);
+                        tvNoRecords.setVisibility(View.VISIBLE);
+                    } else {
+                        if (cursor.moveToLast()) {
+                            txtFirstName.setText("" + cursor.getString(cursor.getColumnIndex("firstName")));
+                            txtLastName.setText("" + cursor.getString(cursor.getColumnIndex("lastName")));
+                            txtAge.setText("" + cursor.getInt(cursor.getColumnIndex("age")));
+                            txtStreetAddress.setText("" + cursor.getString(cursor.getColumnIndex("streetAddress")));
+                            txtCity.setText("" + cursor.getString(cursor.getColumnIndex("city")));
+                            txtProvince.setText("" + cursor.getString(cursor.getColumnIndex("province")));
+                            txtCountry.setText("" + cursor.getString(cursor.getColumnIndex("country")));
+                            txtPostalCode.setText("" + cursor.getString(cursor.getColumnIndex("postalCode")));
+                            txtLatitude.setText("" + cursor.getDouble(cursor.getColumnIndex("latitude")));
+                            txtLongitude.setText("" + cursor.getDouble(cursor.getColumnIndex("longitude")));
+                            txtDateOfInfection.setText("" + cursor.getString(cursor.getColumnIndex("dateOfInfection")));
+
+                            isAlive = cursor.getInt(cursor.getColumnIndex("alive"));
+                            if (isAlive == 0) {
+                                rbAliveNegative.setChecked(true);
+                            } else {
+                                rbAlivePositive.setChecked(true);
+                            }
+
+                            isRecovered = cursor.getInt(cursor.getColumnIndex("recovered"));
+                            if (isRecovered == 0) {
+                                rbRecoveredNegative.setChecked(true);
+                            } else {
+                                rbRecoveredPositive.setChecked(true);
+                            }
+
+                            gender = cursor.getString(cursor.getColumnIndex("gender"));
+                            if (gender == "male") {
+                                rbMale.setChecked(true);
+                            } else {
+                                rbFemale.setChecked(true);
+                            }
+                            linearLayEnterDataFragment.setVisibility(View.VISIBLE);
+                            tvNoRecords.setVisibility(View.GONE);
                         }
+
                     }
                     cursor.close();
                     dbh.close();
+                } else {
+                    linearLayEnterDataFragment.setVisibility(View.GONE);
+                    tvNoRecords.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -163,6 +183,7 @@ public class UpdateFragment extends Fragment {
         });
         return view;
     }
+
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         txtDateOfInfection.setInputType(InputType.TYPE_NULL);
@@ -195,6 +216,7 @@ public class UpdateFragment extends Fragment {
                     + "/" + year);
         }
     };
+
     private void clearFields() {
         txtFirstName.setText("");
         txtLastName.setText("");
@@ -207,8 +229,8 @@ public class UpdateFragment extends Fragment {
         txtLatitude.setText("");
         txtLongitude.setText("");
         txtDateOfInfection.setText("");
-
     }
+
     private void initialize(View view) {
         txtId = view.findViewById(R.id.txtUpdateId);
         txtFirstName = view.findViewById(R.id.txtFullName);
@@ -230,10 +252,36 @@ public class UpdateFragment extends Fragment {
         genderGroup = view.findViewById(R.id.genderRadioGroup);
 
 
-        btnAlivePositive = view.findViewById(R.id.alivePositive);
-        btnAliveNegative = view.findViewById(R.id.aliveNegative);
-        btnRecoveredPositive = view.findViewById(R.id.recoveredPositive);
-        btnRecoveredNegative = view.findViewById(R.id.recoveredNegative);
+        rbAlivePositive = view.findViewById(R.id.alivePositive);
+        rbAliveNegative = view.findViewById(R.id.aliveNegative);
+        rbRecoveredPositive = view.findViewById(R.id.recoveredPositive);
+        rbRecoveredNegative = view.findViewById(R.id.recoveredNegative);
+        rbMale = view.findViewById(R.id.male);
+        rbFemale = view.findViewById(R.id.female);
 
+        linearAutoComplete = view.findViewById(R.id.linearAutoComplete);
+        linearLayEnterDataFragment = view.findViewById(R.id.linearLayEnterDataFragment);
+        linearAutoComplete.setVisibility(View.GONE);
+        linearLayEnterDataFragment.setVisibility(View.GONE);
+        tvNoRecords = view.findViewById(R.id.tvNoRecords);
+        tvNoRecords.setVisibility(View.GONE);
+    }
+
+    private boolean validateInput() {
+        if (Helper.ValidateTextStringData(txtFirstName)
+                && Helper.ValidateTextStringData(txtLastName)
+                && Helper.ValidateTextStringData(txtStreetAddress)
+                && Helper.ValidateTextStringData(txtCity)
+                && Helper.ValidateTextStringData(txtProvince)
+                && Helper.ValidateTextStringData(txtCountry)
+                && Helper.ValidateTextStringData(txtPostalCode)
+                && Helper.ValidateTextStringData(txtDateOfInfection)
+                && Helper.ValidateTextIntegerData(txtAge)
+        ) {
+            return true;
+        } else {
+            Toast.makeText(getContext(), "Error: Enter valid input", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }

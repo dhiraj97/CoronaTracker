@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
-        android:text="UpdatePatient" />
+        android:text="Update Patient" />
 
     <EditText
         android:id="@+id/txtUpdateId"
@@ -18,5 +19,24 @@
         android:ems="10"
         android:hint="Enter Patient Id"
         android:inputType="number" />
-    <include layout="@layout/fragment_enter_data" />
+
+    <TextView
+        android:id="@+id/tvNoRecords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No records"
+        android:textAlignment="center"
+        tools:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/linearLayEnterDataFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/idFragmentEnterData"
+            layout="@layout/fragment_enter_data" />
+    </LinearLayout>
+
 </LinearLayout>

@@ -34,13 +34,14 @@ public class EnterDataFragment extends Fragment {
     RadioGroup aliveGroup, recoveredGroup, genderGroup;
     int isAlive = 1;
     int isRecovered = 1;
-    String gender;
-    Boolean insertStat;
+    String gender = "male";
+    Boolean insertStat = false;
     Button btnSubmit;
     private static final String apiKey = "AIzaSyC1D_ZnFID-vHkPir4F8WI23qjeFCNg2pc";
 
     DatabaseHelper dbh;
     LatLng mLatLong;
+
     public EnterDataFragment() {
     }
 
@@ -80,7 +81,7 @@ public class EnterDataFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_enter_data,container, false);
+        View view = inflater.inflate(R.layout.fragment_enter_data, container, false);
 
         initialize(view);
 
@@ -136,13 +137,15 @@ public class EnterDataFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int patientId = 0;
-                Patient patient = new Patient(patientId, txtFirstName.getText().toString(), txtLastName.getText().toString(), Integer.parseInt(txtAge.getText().toString()), txtStreetAddress.getText().toString(), txtCity.getText().toString(), txtProvince.getText().toString(), txtCountry.getText().toString(), txtPostalCode.getText().toString(), mLatLong.latitude, mLatLong.longitude, txtDateOfInfection.getText().toString(), isAlive, isRecovered, gender);
-
-                insertStat = dbh.insertPatient(patient);
+                if (validateInput()) {
+                    Patient patient = new Patient(patientId, txtFirstName.getText().toString(), txtLastName.getText().toString(), Integer.parseInt(txtAge.getText().toString()), txtStreetAddress.getText().toString(), txtCity.getText().toString(), txtProvince.getText().toString(), txtCountry.getText().toString(), txtPostalCode.getText().toString(), mLatLong.latitude, mLatLong.longitude, txtDateOfInfection.getText().toString(), isAlive, isRecovered, gender);
+                    insertStat = dbh.insertPatient(patient);
+                }
                 if (insertStat) {
                     Toast.makeText(getActivity(), "Record Added Successfully", Toast.LENGTH_SHORT).show();
+                    clearFields();
                 } else if (!insertStat) {
-                    Toast.makeText(getActivity(), "Record Not Added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error: Enter valid input", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -162,9 +165,7 @@ public class EnterDataFragment extends Fragment {
         txtLatitude = view.findViewById(R.id.txtLatitude);
         txtLongitude = view.findViewById(R.id.txtLongitude);
         txtDateOfInfection = view.findViewById(R.id.txtDateOfInfection);
-
         btnSubmit = view.findViewById(R.id.btnSubmit);
-
         aliveGroup = view.findViewById(R.id.aliveRadioGroup);
         recoveredGroup = view.findViewById(R.id.recoveredRadioGroup);
         genderGroup = view.findViewById(R.id.genderRadioGroup);
@@ -176,13 +177,14 @@ public class EnterDataFragment extends Fragment {
                 getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 mLatLong = place.getLatLng();
+
             }
 
             @Override
@@ -193,7 +195,36 @@ public class EnterDataFragment extends Fragment {
     }
 
     private boolean validateInput() {
+        if (Helper.ValidateTextStringData(txtFirstName)
+                && Helper.ValidateTextStringData(txtLastName)
+                && Helper.ValidateTextStringData(txtStreetAddress)
+                && Helper.ValidateTextStringData(txtCity)
+                && Helper.ValidateTextStringData(txtProvince)
+                && Helper.ValidateTextStringData(txtCountry)
+                && Helper.ValidateTextStringData(txtPostalCode)
+                && Helper.ValidateTextStringData(txtDateOfInfection)
+                && Helper.ValidateTextIntegerData(txtAge)
+                && mLatLong != null
+        ) {
+            return true;
+        } else {
+            Toast.makeText(getContext(), "Error: Enter valid input", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
 
-        return true;
+
+    private void clearFields() {
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        txtAge.setText("");
+        txtStreetAddress.setText("");
+        txtCity.setText("");
+        txtProvince.setText("");
+        txtCountry.setText("");
+        txtPostalCode.setText("");
+        txtLatitude.setText("");
+        txtLongitude.setText("");
+        txtDateOfInfection.setText("");
     }
 }
