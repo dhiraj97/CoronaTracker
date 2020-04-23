@@ -83,9 +83,6 @@ public class UpdateFragment extends Fragment {
                     case R.id.female:
                         gender = "female";
                         break;
-                    case R.id.other:
-                        gender = "other";
-                        break;
                 }
             }
         });

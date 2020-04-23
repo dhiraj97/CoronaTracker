@@ -99,14 +99,6 @@
                         android:checked="false"
                         android:text="Female" />
 
-                    <RadioButton
-                        android:id="@+id/other"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="Other" />
-
                 </RadioGroup>
 
             </LinearLayout>

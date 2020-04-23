@@ -193,6 +193,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                /*
                 Integer clickCount = (Integer) marker.getTag();
 
                 // Check if a click count was set, then display the click count.
@@ -200,7 +201,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                     clickCount = clickCount + 1;
                     marker.setTag(clickCount);
                     Toast.makeText(getActivity(), marker.getTitle() + " has been clicked " + clickCount + " times.", Toast.LENGTH_SHORT).show();
-                }
+                }*/
                 return false;
             }
         });
