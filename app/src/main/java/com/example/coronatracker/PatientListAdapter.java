@@ -1,6 +1,7 @@
 package com.example.coronatracker;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,12 +55,12 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public int getMapIcon(Patient patient) {
-
+        Log.d("VIVEK", "isServicesOK: checking google services version" + patient.getGender());
         if (patient.getAlive() == 0) {
             return R.drawable.death;
         } else if (patient.getRecovered() == 1) {
             return R.drawable.discharged;
-        } else if (patient.getGender() == "male") {
+        } else if (patient.getGender().equals("male")) {
             return R.drawable.activemale;
         } else {
             return R.drawable.activefemale;

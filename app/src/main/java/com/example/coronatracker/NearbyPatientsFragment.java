@@ -186,7 +186,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                     .snippet("(" + mPatients.get(i).getDateOfInfection() + ")")
                     .icon(BitmapDescriptorFactory.fromResource(getMapIcon(mPatients.get(i)))));
             mMarker.setTag(0);
-            Log.e(TAG, "onMapReady: " + mPatients.get(i).getLatitude() + ", " + mPatients.get(i).getLongitude() + "");
+            Log.e(TAG, "onMapReady: " + mPatients.get(i).getLatitude() + ", " + mPatients.get(i).getLongitude() + "" + getMapIcon(mPatients.get(i)));
         }
 
         // Set a listener for marker click.
@@ -213,7 +213,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
             return R.drawable.death_small;
         } else if (patient.getRecovered() == 1) {
             return R.drawable.discharged_small;
-        } else if (patient.getGender() == "male") {
+        } else if (patient.getGender().equals("male")) {
             return R.drawable.activemale_small;
         } else {
             return R.drawable.activefemale_small;

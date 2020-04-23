@@ -150,7 +150,7 @@ public class DeleteFragment extends Fragment {
             return R.drawable.death;
         } else if (patient.getRecovered() == 1) {
             return R.drawable.discharged;
-        } else if (patient.getGender() == "male") {
+        } else if (patient.getGender().equals("male")) {
             return R.drawable.activemale;
         } else {
             return R.drawable.activefemale;
