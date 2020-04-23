@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 
 import androidx.annotation.Nullable;
 
@@ -125,10 +126,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
         }
         return cursor;
-
     }
-
-
+    //function to retrive count of patient on age basis
+    public Cursor getCount(int age1,int age2)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        String query = "SELECT COUNT(age) from "+TABLE_NAME+" WHERE age BETWEEN "+age1+" AND "+age2;
+        SQLiteStatement statement=db.compileStatement(query);
+        cursor=db.rawQuery(query,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
     //Updates student record
     public int updatePatient(Patient patient) {
         SQLiteDatabase db = this.getWritableDatabase();
