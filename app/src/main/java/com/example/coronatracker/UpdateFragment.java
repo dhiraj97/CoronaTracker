@@ -158,7 +158,7 @@ public class UpdateFragment extends Fragment {
                             }
 
                             gender = cursor.getString(cursor.getColumnIndex("gender"));
-                            if (gender == "male") {
+                            if (gender.equals("male")) {
                                 rbMale.setChecked(true);
                             } else {
                                 rbFemale.setChecked(true);
