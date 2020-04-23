@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -56,6 +57,7 @@ public class AnalyticsFragment extends Fragment {
         //Code to Add Bar Chart
         //Bar chart that represents number of patients per city
         barChart.setDrawBarShadow(true);
+        barChart.getDescription().setEnabled(false);
         barChart.setDrawValueAboveBar(true);
         barChart.setMaxVisibleValueCount(100);
         barChart.setPinchZoom(false);
@@ -107,6 +109,7 @@ public class AnalyticsFragment extends Fragment {
             //----------------------------------
             //Code to represent Piechart
             pieChart.setRotationEnabled(true);
+            pieChart.getDescription().setEnabled(false);
             pieChart.setTransparentCircleAlpha(0);
             pieChart.setCenterText("Affect in different Age Groups");
             pieChart.setCenterTextSize(13f);
