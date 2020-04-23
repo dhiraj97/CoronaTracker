@@ -71,7 +71,6 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((ViewHolder) holder).txtRecovered.setText("Recovered: " + patient.getRecovered());
     }
 
-
     @Override
     //Returns the total count of items in the list
     public int getItemCount() {
