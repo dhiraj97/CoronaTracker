@@ -129,6 +129,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                     patient.setAlive(cursor.getInt(cursor.getColumnIndex("alive")));
                     patient.setRecovered(cursor.getInt(cursor.getColumnIndex("recovered")));
                     patient.setLatitude(cursor.getDouble(cursor.getColumnIndex("latitude")));
+                    patient.setGender(cursor.getString(cursor.getColumnIndex("gender")));
                     patient.setLongitude(cursor.getDouble(cursor.getColumnIndex("longitude")));
                     mPatients.add(patient);
                 } while (cursor.moveToNext());
@@ -185,7 +186,7 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
                     .snippet(mPatients.get(i).getDateOfInfection())
                     .icon(BitmapDescriptorFactory.fromResource(getMapIcon(mPatients.get(i)))));
             mMarker.setTag(0);
-            Log.e(TAG, "onMapReady: " + mPatients.get(i).getLatitude() + ", " + mPatients.get(i).getLongitude());
+            Log.e(TAG, "onMapReady: " + mPatients.get(i).getLatitude() + ", " + mPatients.get(i).getLongitude() + "");
         }
 
         // Set a listener for marker click.
