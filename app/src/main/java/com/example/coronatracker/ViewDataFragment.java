@@ -44,6 +44,7 @@ public class ViewDataFragment extends Fragment {
                     patient.setFirstName(cursor.getString(cursor.getColumnIndex("firstName")));
                     patient.setLastName(cursor.getString(cursor.getColumnIndex("lastName")));
                     patient.setAge(cursor.getInt(cursor.getColumnIndex("age")));
+                    patient.setGender(cursor.getString(cursor.getColumnIndex("gender")));
                     patient.setCity(cursor.getString(cursor.getColumnIndex("city")));
                     patient.setProvince(cursor.getString(cursor.getColumnIndex("province")));
                     patient.setCountry(cursor.getString(cursor.getColumnIndex("country")));

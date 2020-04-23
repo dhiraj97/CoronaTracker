@@ -26,7 +26,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtId, txtFirstName, txtLastName, txtAge, txtCity,txtProvince,
-                txtCountry, txtDateOfInfection, txtRecovered, txtAlive;
+                txtCountry, txtDateOfInfection, txtRecovered, txtAlive, txtGender;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -40,6 +40,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             txtDateOfInfection = itemView.findViewById(R.id.txtDateOfInfection);
             txtAlive = itemView.findViewById(R.id.txtAlive);
             txtRecovered = itemView.findViewById(R.id.txtRecovered);
+            txtGender = itemView.findViewById(R.id.txtGender);
         }
 
     }
@@ -60,6 +61,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         ((ViewHolder) holder).txtId.setText("Id: " + patient.getId());
         ((ViewHolder) holder).txtFirstName.setText("First Name: " + patient.getFirstName());
         ((ViewHolder) holder).txtLastName.setText("Last Name: " + patient.getLastName());
+        ((ViewHolder) holder).txtGender.setText("Gender: " + patient.getGender());
         ((ViewHolder) holder).txtAge.setText("Age: " + patient.getAge());
         ((ViewHolder) holder).txtCity.setText("City: " + patient.getCity());
         ((ViewHolder) holder).txtProvince.setText("Province: " + patient.getProvince());
