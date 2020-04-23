@@ -16,10 +16,19 @@ public class Patient {
     private int alive;
     private int recovered;
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    private String gender;
     public Patient() {
     }
 
-    public Patient(int id, String firstName, String lastName, int age, String streetAddress, String city, String province,String country, String postalCode, double latitude, double longitude, String dateOfInfection, int alive, int recovered) {
+    public Patient(int id, String firstName, String lastName, int age, String streetAddress, String city, String province,String country, String postalCode, double latitude, double longitude, String dateOfInfection, int alive, int recovered, String gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,6 +43,7 @@ public class Patient {
         this.dateOfInfection = dateOfInfection;
         this.alive = alive;
         this.recovered = recovered;
+        this.gender = gender;
     }
 
     public int getId() {

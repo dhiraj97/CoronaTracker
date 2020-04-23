@@ -22,9 +22,10 @@ public class EnterDataFragment extends Fragment {
     EditText txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity, txtProvince,
             txtCountry, txtPostalCode, txtLatitude, txtLongitude,
             txtDateOfInfection;
-    RadioGroup aliveGroup, recoveredGroup;
+    RadioGroup aliveGroup, recoveredGroup, genderGroup;
     int isAlive = 1;
     int isRecovered = 1;
+    String gender;
     Boolean insertStat;
     Button btnSubmit;
     DatabaseHelper dbh;
@@ -65,6 +66,22 @@ public class EnterDataFragment extends Fragment {
                 }
             }
         });
+        genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.male:
+                        gender = "male";
+                        break;
+                    case R.id.female:
+                        gender = "female";
+                        break;
+                    case R.id.other:
+                        gender = "other";
+                        break;
+                }
+            }
+        });
 
         dbh = new DatabaseHelper(getActivity());
 
@@ -72,7 +89,7 @@ public class EnterDataFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int patientId = 0;
-                Patient patient = new Patient(patientId, txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtProvince.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered);
+                Patient patient = new Patient(patientId, txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtProvince.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered, gender);
 
                 insertStat = dbh.insertPatient(patient);
                 if (insertStat) {
@@ -136,5 +153,6 @@ public class EnterDataFragment extends Fragment {
 
         aliveGroup = view.findViewById(R.id.aliveRadioGroup);
         recoveredGroup = view.findViewById(R.id.recoveredRadioGroup);
+        genderGroup = view.findViewById(R.id.genderRadioGroup);
     }
 }

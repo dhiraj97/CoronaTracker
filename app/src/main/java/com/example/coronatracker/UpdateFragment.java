@@ -27,10 +27,11 @@ public class UpdateFragment extends Fragment {
     EditText txtId,txtFirstName, txtLastName, txtAge, txtStreetAddress, txtCity,txtProvince,
             txtCountry, txtPostalCode, txtLatitude, txtLongitude,
             txtDateOfInfection;
-    RadioGroup aliveGroup, recoveredGroup;
+    RadioGroup aliveGroup, recoveredGroup, genderGroup;
     RadioButton btnAlivePositive, btnAliveNegative, btnRecoveredPositive, btnRecoveredNegative;
     int isAlive = 1;
     int isRecovered = 1;
+    String gender;
     Button btnSubmit;
     DatabaseHelper dbh;
 
@@ -72,13 +73,30 @@ public class UpdateFragment extends Fragment {
                 }
             }
         });
+        genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i) {
+                    case R.id.male:
+                        gender = "male";
+                        break;
+                    case R.id.female:
+                        gender = "female";
+                        break;
+                    case R.id.other:
+                        gender = "other";
+                        break;
+                }
+            }
+        });
+
 
         dbh = new DatabaseHelper(getActivity());
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Patient patient = new Patient(Integer.parseInt(txtId.getText().toString()), txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtProvince.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered);
+                Patient patient = new Patient(Integer.parseInt(txtId.getText().toString()), txtFirstName.getText().toString(), txtLastName.getText().toString(),Integer.parseInt(txtAge.getText().toString()),txtStreetAddress.getText().toString(),txtCity.getText().toString(),txtProvince.getText().toString(),txtCountry.getText().toString(),txtPostalCode.getText().toString(),Double.parseDouble(txtLatitude.getText().toString()),Double.parseDouble(txtLongitude.getText().toString()),txtDateOfInfection.getText().toString(),isAlive,isRecovered, gender);
                 int numOfRows = dbh.updatePatient(patient);
                 if (numOfRows > 0) {
                     Toast.makeText(getContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
@@ -212,6 +230,8 @@ public class UpdateFragment extends Fragment {
 
         aliveGroup = view.findViewById(R.id.aliveRadioGroup);
         recoveredGroup = view.findViewById(R.id.recoveredRadioGroup);
+        genderGroup = view.findViewById(R.id.genderRadioGroup);
+
 
         btnAlivePositive = view.findViewById(R.id.alivePositive);
         btnAliveNegative = view.findViewById(R.id.aliveNegative);

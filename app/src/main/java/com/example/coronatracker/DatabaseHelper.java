@@ -29,6 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL12 = "dateOfInfection";
     public static final String COL13 = "alive";
     public static final String COL14 = "recovered";
+    public static final String COL15 = "gender";
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME +
                     "("
@@ -45,7 +46,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COL11 + " REAL NOT NULL, "
                     + COL12 + " TEXT NOT NULL, "
                     + COL13 + " INTEGER NOT NULL, "
-                    + COL14 + " INTEGER NOT NULL);";
+                    + COL14 + " INTEGER NOT NULL, "
+                    + COL15 + " INTEGER NOT NULL);";
 
     public static final String DROP_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -82,6 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL12, patient.getDateOfInfection());
         cv.put(COL13, patient.getAlive());
         cv.put(COL14, patient.getRecovered());
+        cv.put(COL15, patient.getGender());
 
 
         long result = db.insert(TABLE_NAME, null, cv);
@@ -172,6 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COL12, patient.getDateOfInfection());
         cv.put(COL13, patient.getAlive());
         cv.put(COL14, patient.getRecovered());
+        cv.put(COL15, patient.getGender());
 
 
         int numOfRows = db.update(TABLE_NAME, cv, "id=" + patient.getId(), null);
