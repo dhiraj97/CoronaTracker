@@ -2,8 +2,8 @@
 Corona Tracker Android Final Project
 
 
-#Created by
-Vviek Savsaiya
+# Created by
+Vivek Savsaiya
 Dhiraj Ramnani
 Siva Balusu
 Kalash Raparthi
