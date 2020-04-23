@@ -210,13 +210,13 @@ public class NearbyPatientsFragment extends Fragment implements OnMapReadyCallba
     public int getMapIcon(Patient patient) {
 
         if (patient.getAlive() == 0) {
-            return R.drawable.death;
+            return R.drawable.death_small;
         } else if (patient.getRecovered() == 1) {
-            return R.drawable.discharged;
+            return R.drawable.discharged_small;
         } else if (patient.getGender() == "male") {
-            return R.drawable.activemale;
+            return R.drawable.activemale_small;
         } else {
-            return R.drawable.activefemale;
+            return R.drawable.activefemale_small;
         }
     }
 
